@@ -2,7 +2,7 @@
 
 namespace SRC\Domain\Exception;
 
-interface DomainException
+abstract class DomainException extends \Exception
 {
-    public function setMessage($message);
+    public abstract function setMessage($message);
 }

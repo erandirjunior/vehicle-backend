@@ -2,5 +2,5 @@
 
 namespace SRC\Domain\Exception;
 
-interface ValidateException extends DomainException
+abstract class ValidateException extends DomainException
 {}

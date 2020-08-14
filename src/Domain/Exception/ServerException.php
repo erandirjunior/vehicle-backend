@@ -2,5 +2,5 @@
 
 namespace SRC\Domain\Exception;
 
-interface ServerException extends DomainException
+abstract class ServerException extends DomainException
 {}
