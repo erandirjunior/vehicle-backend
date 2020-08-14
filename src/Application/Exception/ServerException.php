@@ -2,9 +2,7 @@
 
 namespace SRC\Application\Exception;
 
-use SRC\Domain\Exception\ServerException;
-
-class ServerExceptionException extends \Exception implements ServerException
+class ServerException extends \SRC\Domain\Exception\ServerException
 {
     protected $code = 500;
 
