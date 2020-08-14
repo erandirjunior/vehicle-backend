@@ -1,6 +1,7 @@
 {
   "require": {
-    "erandir/plug-route": "v3.9"
+    "erandir/plug-route": "v3.9",
+    "firebase/php-jwt": "^5.2"
   },
   "autoload": {
     "psr-4": {
