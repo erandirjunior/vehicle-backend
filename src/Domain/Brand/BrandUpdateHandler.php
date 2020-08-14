@@ -9,6 +9,8 @@ use SRC\Domain\Brand\Interfaces\ContactCreateRepository;
 use SRC\Domain\Brand\Interfaces\ContactDeleteRepository;
 use SRC\Domain\Brand\Interfaces\ContactUpdateRepository;
 use SRC\Domain\Brand\Interfaces\Response;
+use SRC\Domain\Exception\ServerException;
+use SRC\Domain\Exception\ValidateException;
 
 class BrandUpdateHandler
 {
@@ -18,61 +20,49 @@ class BrandUpdateHandler
 
     private $validator;
 
-    private $response;
+    private ValidateException $validateException;
+
+    private ServerException $serverException;
+
     public function __construct(
-        BrandUpdateRepository $BrandUpdateRepository,
-        BrandBoundery $BrandBoundery,
-        BrandValidator $BrandValidator,
-        Response $response
+        BrandUpdateRepository $brandUpdateRepository,
+        BrandBoundery $brandBoundery,
+        BrandValidator $brandValidator,
+        ValidateException $validateException,
+        ServerException $serverException
     )
     {
-        $this->repository               = $BrandUpdateRepository;
-        $this->boundery                 = $BrandBoundery;
-        $this->validator                = $BrandValidator;
-        $this->response                 = $response;
+        $this->repository           = $brandUpdateRepository;
+        $this->boundery             = $brandBoundery;
+        $this->validator            = $brandValidator;
+        $this->validateException    = $validateException;
+        $this->serverException      = $serverException;
     }
 
-    public function update(int $id)
+    public function handler(int $id)
     {
         $this->updateIfDataAreValids($id);
-
-        return $this->response;
     }
 
     private function updateIfDataAreValids($id)
     {
         if ($this->validator->validate($this->boundery)) {
-            $this->setResponse($this->validator->errors(), 400);
+            $this->validateException->setMessage($this->validator->errors());
 
-            return;
+            throw $this->validateException;
         }
 
-        return $this->updateIfUniqueBrandName($id);
-    }
-
-    private function updateIfUniqueBrandName($id)
-    {
-        if ($this->repository->checkIfHasOtherBrandWithTheSameName($id, $this->boundery->getName())) {
-            $this->setResponse(['Já existe um Brande com esse CPF/CNPJ!'], 400);
-
-            return;
-        }
-
-        return $this->save($id);
+        $this->save($id);
     }
 
     private function save($id)
     {
-        $this->setResponse(['Houve um erro ao cadastrar o Brande'], 500);
+        try {
+            $this->repository->update($id, $this->boundery);
+        } catch (\Exception $e) {
+            $this->serverException->setMessage('The name is already in use!');
 
-        if ($this->repository->update($id, $this->boundery)) {
-            $this->setResponse([], 204);
+            throw $this->serverException;
         }
-    }
-
-    private function setResponse($msg = [], $code = 200)
-    {
-        $this->response->setBody(['msg' => $msg]);
-        $this->response->setCode($code);
     }
 }

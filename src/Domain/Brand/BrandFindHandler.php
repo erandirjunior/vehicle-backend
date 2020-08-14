@@ -9,23 +9,17 @@ class BrandFindHandler
 {
     private $repository;
 
-    private $response;
-
     /**
      * BrandFindAllHandler constructor.
      * @param $repository
      */
-    public function __construct(BrandFindRepository $repository, Response $response)
+    public function __construct(BrandFindRepository $repository)
     {
         $this->repository = $repository;
-        $this->response = $response;
     }
 
-    public function findById($id)
+    public function handler($id)
     {
-        $data = $this->repository->findById($id);
-
-        $this->response->setCode(200);
-        $this->response->setBody($data);
+        return $this->repository->findById($id);
     }
 }

@@ -4,27 +4,29 @@ namespace SRC\Domain\Brand;
 
 use SRC\Domain\Brand\Interfaces\BrandDeleteRepository;
 use SRC\Domain\Brand\Interfaces\Response;
+use SRC\Domain\Exception\ServerException;
 
 class BrandDeleteHandler
 {
-    private $repository;
+    private BrandDeleteRepository $repository;
 
-    private $response;
+    private ServerException $serverException;
 
-    public function __construct(BrandDeleteRepository $BrandDeleteRepository, Response $response)
+    public function __construct(
+        BrandDeleteRepository $BrandDeleteRepository,
+        ServerException $serverException
+    )
     {
-        $this->repository = $BrandDeleteRepository;
-        $this->response = $response;
+        $this->repository       = $BrandDeleteRepository;
+        $this->serverException  = $serverException;
     }
 
-    public function delete($id)
+    public function handler($id)
     {
-        $this->response->setBody([]);
-        $this->response->setCode(204);
-
         if (!$this->repository->delete($id)) {
-            $this->response->setBody(['Houve um erro ao excluir o Brande!']);
-            $this->response->setCode(500);
+            $this->serverException->setMessage('Sorry, there was an error not specificated!');
+
+            throw $this->serverException;
         }
     }
 }

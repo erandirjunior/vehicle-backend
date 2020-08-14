@@ -40,7 +40,7 @@ class BrandCreateHandler
 
     public function handler()
     {
-        return $this->createIfDataAreValids();
+        $this->createIfDataAreValids();
     }
 
     private function createIfDataAreValids()
@@ -52,27 +52,28 @@ class BrandCreateHandler
             throw $this->validateException;
         }
 
-        return $this->createIfUniqueBrandName();
+        $this->createIfUniqueBrandName();
     }
 
     private function createIfUniqueBrandName()
     {
         if ($this->repository->findByBrandName($this->boundery->getName())) {
             $this->validateException
-            ->setMessage('Sorry, the name already in use!');
+            ->setMessage('The name is already in use!');
 
             throw $this->validateException;
         }
 
-        return $this->save();
+        $this->save();
     }
 
     private function save()
     {
-        if ($this->repository->create($this->boundery)) {
-            return true;
+        if (!$this->repository->create($this->boundery)) {
+            $this->serverException->setMessage('Sorry, there was an error not specificated!');
+
+            throw $this->serverException;
         }
 
-        throw $this->serverException->setMessage('Sorry, server error!');
     }
 }

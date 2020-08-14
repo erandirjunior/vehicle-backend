@@ -1,23 +1,19 @@
 <?php
 
-
 namespace SRC\Application\Controller;
-
 
 use PlugRoute\Http\Request;
 use SRC\Application\Boundery\Brand;
+use SRC\Application\Exception\ServerException;
+use SRC\Application\Exception\ValidateException;
 use SRC\Application\Presenter\JsonPresenter;
-use SRC\Application\Response\Response;
 use SRC\Domain\Brand\BrandUpdateHandler;
 use SRC\Domain\Brand\Interfaces\BrandUpdateRepository;
 use SRC\Domain\Brand\Interfaces\BrandValidator;
-use SRC\Domain\Brand\Interfaces\ContactCreateRepository;
-use SRC\Domain\Brand\Interfaces\ContactDeleteRepository;
-use SRC\Domain\Brand\Interfaces\ContactUpdateRepository;
 
 class BrandUpdate
 {
-    /*private $request;
+    private $request;
 
     private $repository;
 
@@ -35,23 +31,29 @@ class BrandUpdate
         $this->validator                = $BrandValidator;
     }
 
-    public function update()
+    public function handler()
     {
-        $id         = $this->request->parameter('id');
-        $name       = $this->request->input('name');
+        $id                 = $this->request->parameter('id');
+        $name               = $this->request->input('name');
+        $validateException  = new ValidateException();
+        $serverException    = new ServerException();
+        $jsonPresenter      = new JsonPresenter();
 
-        $brand     = new Brand($name);
-        $response   = new Response();
+        try {
+            $brand  = new Brand($name);
+            $domain = new BrandUpdateHandler(
+                $this->repository,
+                $brand,
+                $this->validator,
+                $validateException,
+                $serverException
+            );
 
-        $domain = new BrandUpdateHandler(
-            $this->repository,
-            $brand,
-            $this->validator,
-            $response
-        );
+            $domain->handler($id);
 
-        $domain->update($id);
-
-        echo (new JsonPresenter())->json($response->getBody(), $response->getCode());
-    }*/
+            echo $jsonPresenter->json('', 204);
+        } catch (\Exception $exception) {
+            echo $jsonPresenter->json($exception->getMessage(), $exception->getCode());
+        }
+    }
 }
