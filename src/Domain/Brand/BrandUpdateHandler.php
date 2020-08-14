@@ -14,11 +14,11 @@ use SRC\Domain\Exception\ValidateException;
 
 class BrandUpdateHandler
 {
-    private $repository;
+    private BrandUpdateRepository $repository;
 
-    private $boundery;
+    private BrandBoundery $boundery;
 
-    private $validator;
+    private BrandValidator $validator;
 
     private ValidateException $validateException;
 

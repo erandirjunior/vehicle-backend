@@ -13,11 +13,11 @@ use SRC\Domain\Brand\Interfaces\BrandValidator;
 
 class BrandUpdate
 {
-    private $request;
+    private Request $request;
 
-    private $repository;
+    private BrandUpdateRepository $repository;
 
-    private $validator;
+    private BrandValidator $validator;
 
 
     public function __construct(

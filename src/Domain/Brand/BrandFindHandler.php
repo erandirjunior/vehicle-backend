@@ -7,7 +7,7 @@ use SRC\Domain\Brand\Interfaces\Response;
 
 class BrandFindHandler
 {
-    private $repository;
+    private BrandFindRepository $repository;
 
     /**
      * BrandFindAllHandler constructor.
