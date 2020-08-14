@@ -9,7 +9,6 @@ CREATE TABLE IF NOT EXISTS brand
     name       VARCHAR(255)                       NOT NULL,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP NULL,
     updated_at DATETIME                           NULL,
-    deleted_at DATETIME                           NULL,
     CONSTRAINT brand_name_uindex
         UNIQUE (name)
 );
@@ -22,7 +21,6 @@ CREATE TABLE IF NOT EXISTS model
     brand_id   INT                                NOT NULL,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP NULL,
     updated_at DATETIME                           NULL,
-    deleted_at DATETIME                           NULL,
     CONSTRAINT model_name_uindex
         UNIQUE (name),
     CONSTRAINT model_brand_id_fk
@@ -38,6 +36,8 @@ CREATE TABLE IF NOT EXISTS vehicle
     model_id   INT           NOT NULL,
     year_model INT           NOT NULL,
     fuel       VARCHAR(255)  NOT NULL,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP NULL,
+    updated_at DATETIME                           NULL,
     CONSTRAINT vehicles_brand_id_fk
         FOREIGN KEY (brand_id) REFERENCES brand (id),
     CONSTRAINT vehicles_model_id_fk
