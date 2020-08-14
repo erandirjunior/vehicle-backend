@@ -13,15 +13,15 @@ $route->options('/{anything}', function () {
 });
 
 $route->group(['prefix' => '/', 'namespace' => 'SRC\Application\Controller'], function ($route) {
-    $route->get('brands', '\\BrandFindAll@findAll');
+    $route->get('brands', '\\BrandFindAll@handler');
 
     $route->post('brands', '\\BrandCreate@handler');
 
-    $route->put('brands/{id:\d+}', '\\BrandUpdate@update');
+    $route->put('brands/{id:\d+}', '\\BrandUpdate@handler');
 
-    $route->delete('brands/{id:\d+}', '\\BrandDelete@delete');
+    $route->delete('brands/{id:\d+}', '\\BrandDelete@handler');
 
-    $route->get('brands/{id:\d+}', '\\BrandFind@findById');
+    $route->get('brands/{id:\d+}', '\\BrandFind@handler');
 });
 
 
