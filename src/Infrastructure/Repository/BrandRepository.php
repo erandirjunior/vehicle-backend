@@ -70,7 +70,7 @@ class BrandRepository implements
 
     public function delete($id): bool
     {
-        $stmt = $this->connection->prepare("UPDATE brand SET deleted_at = NOW() WHERE id = ?");
+        $stmt = $this->connection->prepare("DELETE FROM brand WHERE id = ?");
         $stmt->bindValue(1, $id);
 
         return $stmt->execute() ? true : false;
@@ -89,14 +89,5 @@ class BrandRepository implements
         $stmt->bindValue(2, $id);
 
         return $stmt->execute() ? 1 : 0;
-    }
-
-    public function checkIfHasOtherBrandWithTheSameName(int $id, string $name): bool
-    {
-        $stmt = $this->connection->prepare("SELECT id FROM brand WHERE name = ? AND id != ? AND deleted_at IS NULL");
-        $stmt->bindValue(1, $name);
-        $stmt->bindValue(2, $id);
-        $stmt->execute();
-        return !!$stmt->fetch();
     }
 }
