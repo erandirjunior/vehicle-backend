@@ -77,11 +77,13 @@ class ModelRepository implements
                                                 model
                                             SET
                                                 name = ?,
+                                                brand_id = ?,
                                                 updated_at = NOW()
                                             WHERE
                                                 id = ?");
         $stmt->bindValue(1, $modelBoundery->getName());
-        $stmt->bindValue(2, $id);
+        $stmt->bindValue(2, $modelBoundery->getBrandId());
+        $stmt->bindValue(3, $id);
 
         return $stmt->execute() ? 1 : 0;
     }
