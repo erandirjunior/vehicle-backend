@@ -8,15 +8,28 @@ use SRC\Application\Presenter\JsonPresenter;
 use SRC\Domain\Brand\BrandDeleteHandler;
 use SRC\Domain\Brand\Interfaces\BrandDeleteRepository;
 
+/**
+ * Class BrandDelete
+ * @package SRC\Application\Controller\Brand
+ */
 class BrandDelete
 {
-    public function handler(BrandDeleteRepository $BrandDeleteRepository, Request $request)
+    /**
+     * Call class to execute delete action and return a json.
+     *
+     * @param BrandDeleteRepository $brandDeleteRepository
+     * @param Request $request
+     *
+     * @see JsonPresenter
+     * @see BrandDeleteHandler
+     */
+    public function handler(BrandDeleteRepository $brandDeleteRepository, Request $request)
     {
         $jsonPresenter      = new JsonPresenter();
         $serverException    = new ServerException();
 
         try {
-            $domain = new BrandDeleteHandler($BrandDeleteRepository, $serverException);
+            $domain = new BrandDeleteHandler($brandDeleteRepository, $serverException);
             $domain->handler($request->parameter('id'));
 
             echo $jsonPresenter->json('', 204);

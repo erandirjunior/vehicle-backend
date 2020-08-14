@@ -11,26 +11,51 @@ use SRC\Domain\Brand\BrandUpdateHandler;
 use SRC\Domain\Brand\Interfaces\BrandUpdateRepository;
 use SRC\Domain\Brand\Interfaces\BrandValidator;
 
+/**
+ * Class BrandUpdate
+ * @package SRC\Application\Controller\Brand
+ */
 class BrandUpdate
 {
+    /**
+     * @var Request
+     */
     private Request $request;
 
+    /**
+     * @var BrandUpdateRepository
+     */
     private BrandUpdateRepository $repository;
 
+    /**
+     * @var BrandValidator
+     */
     private BrandValidator $validator;
 
 
+    /**
+     * BrandUpdate constructor.
+     * @param Request $request
+     * @param BrandUpdateRepository $brandUpdateRepository
+     * @param BrandValidator $brandValidator
+     */
     public function __construct(
         Request $request,
-        BrandUpdateRepository $BrandUpdateRepository,
-        BrandValidator $BrandValidator
+        BrandUpdateRepository $brandUpdateRepository,
+        BrandValidator $brandValidator
     )
     {
         $this->request                  = $request;
-        $this->repository               = $BrandUpdateRepository;
-        $this->validator                = $BrandValidator;
+        $this->repository               = $brandUpdateRepository;
+        $this->validator                = $brandValidator;
     }
 
+    /**
+     * Call class to execute update action and return a json.
+     *
+     * @see JsonPresenter
+     * @see BrandUpdateHandler
+     */
     public function handler()
     {
         $id                 = $this->request->parameter('id');

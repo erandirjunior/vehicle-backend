@@ -11,15 +11,34 @@ use SRC\Domain\Model\Interfaces\ModelUpdateRepository;
 use SRC\Domain\Model\Interfaces\ModelValidator;
 use SRC\Domain\Model\ModelUpdateHandler;
 
+/**
+ * Class ModelUpdate
+ * @package SRC\Application\Controller\Model
+ */
 class ModelUpdate
 {
+    /**
+     * @var Request
+     */
     private Request $request;
 
+    /**
+     * @var ModelUpdateRepository
+     */
     private ModelUpdateRepository $repository;
 
+    /**
+     * @var ModelValidator
+     */
     private ModelValidator $validator;
 
 
+    /**
+     * ModelUpdate constructor.
+     * @param Request $request
+     * @param ModelUpdateRepository $modelUpdateRepository
+     * @param ModelValidator $modelValidator
+     */
     public function __construct(
         Request $request,
         ModelUpdateRepository $modelUpdateRepository,
@@ -31,6 +50,12 @@ class ModelUpdate
         $this->validator                = $modelValidator;
     }
 
+    /**
+     * Call class to execute update action and return a json.
+     *
+     * @see JsonPresenter
+     * @see ModelUpdateHandler
+     */
     public function handler()
     {
         $id                 = $this->request->parameter('id');

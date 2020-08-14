@@ -8,18 +8,45 @@ use SRC\Domain\Exception\ValidateException;
 use SRC\Domain\Model\Interfaces\ModelUpdateRepository;
 use SRC\Domain\Model\Interfaces\ModelValidator;
 
+/**
+ * Class ModelUpdateHandler
+ * @package SRC\Domain\Model
+ */
 class ModelUpdateHandler
 {
+    /**
+     * @var ModelUpdateRepository
+     */
     private ModelUpdateRepository $repository;
 
+    /**
+     * @var ModelBoundery
+     */
     private ModelBoundery $boundery;
 
+    /**
+     * @var ModelValidator
+     */
     private ModelValidator $validator;
 
+    /**
+     * @var ValidateException
+     */
     private ValidateException $validateException;
 
+    /**
+     * @var ServerException
+     */
     private ServerException $serverException;
 
+    /**
+     * ModelUpdateHandler constructor.
+     * @param ModelUpdateRepository $modelUpdateRepository
+     * @param ModelBoundery $modelBoundery
+     * @param ModelValidator $modelValidator
+     * @param ValidateException $validateException
+     * @param ServerException $serverException
+     */
     public function __construct(
         ModelUpdateRepository $modelUpdateRepository,
         ModelBoundery $modelBoundery,
@@ -35,11 +62,22 @@ class ModelUpdateHandler
         $this->serverException      = $serverException;
     }
 
+    /**
+     * Update model data by id.
+     *
+     * @param int $id
+     * @throws ValidateException
+     */
     public function handler(int $id)
     {
         $this->updateIfDataAreValids($id);
     }
 
+    /**
+     * @param $id
+     * @throws ServerException
+     * @throws ValidateException
+     */
     private function updateIfDataAreValids($id)
     {
         if ($this->validator->validate($this->boundery)) {
@@ -51,6 +89,10 @@ class ModelUpdateHandler
         $this->save($id);
     }
 
+    /**
+     * @param $id
+     * @throws ServerException
+     */
     private function save($id)
     {
         try {

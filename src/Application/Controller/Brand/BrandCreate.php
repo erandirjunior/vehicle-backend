@@ -11,25 +11,50 @@ use SRC\Domain\Brand\BrandCreateHandler;
 use SRC\Domain\Brand\Interfaces\BrandCreateRepository;
 use SRC\Domain\Brand\Interfaces\BrandValidator;
 
+/**
+ * Class BrandCreate
+ * @package SRC\Application\Controller\Brand
+ */
 class BrandCreate
 {
+    /**
+     * @var Request
+     */
     private Request $request;
 
+    /**
+     * @var BrandValidator
+     */
     private BrandValidator $validator;
 
+    /**
+     * @var BrandCreateRepository
+     */
     private BrandCreateRepository $repository;
 
+    /**
+     * BrandCreate constructor.
+     * @param Request $request
+     * @param BrandValidator $brandValidator
+     * @param BrandCreateRepository $brandCreateRepository
+     */
     public function __construct(
         Request $request,
-        BrandValidator $BrandValidator,
-        BrandCreateRepository $BrandCreateRepository
+        BrandValidator $brandValidator,
+        BrandCreateRepository $brandCreateRepository
     )
     {
         $this->request = $request;
-        $this->validator = $BrandValidator;
-        $this->repository = $BrandCreateRepository;
+        $this->validator = $brandValidator;
+        $this->repository = $brandCreateRepository;
     }
 
+    /**
+     * Call class to execute create action and return a json.
+     *
+     * @see BrandCreateHandler
+     * @see JsonPresenter
+     */
     public function handler()
     {
         $name               = $this->request->input('name');

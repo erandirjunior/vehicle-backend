@@ -2,8 +2,15 @@
 
 namespace SRC\Infrastructure\Database;
 
+/**
+ * Class Connection
+ * @package SRC\Infrastructure\Database
+ */
 class Connection
 {
+    /**
+     * @return \PDO
+     */
     public function getConnection()
     {
         try {

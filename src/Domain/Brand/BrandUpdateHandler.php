@@ -5,25 +5,48 @@ namespace SRC\Domain\Brand;
 use SRC\Domain\Brand\Interfaces\BrandBoundery;
 use SRC\Domain\Brand\Interfaces\BrandUpdateRepository;
 use SRC\Domain\Brand\Interfaces\BrandValidator;
-use SRC\Domain\Brand\Interfaces\ContactCreateRepository;
-use SRC\Domain\Brand\Interfaces\ContactDeleteRepository;
-use SRC\Domain\Brand\Interfaces\ContactUpdateRepository;
-use SRC\Domain\Brand\Interfaces\Response;
 use SRC\Domain\Exception\ServerException;
 use SRC\Domain\Exception\ValidateException;
 
+/**
+ * Class BrandUpdateHandler
+ * @package SRC\Domain\Brand
+ */
 class BrandUpdateHandler
 {
+    /**
+     * @var BrandUpdateRepository
+     */
     private BrandUpdateRepository $repository;
 
+    /**
+     * @var BrandBoundery
+     */
     private BrandBoundery $boundery;
 
+    /**
+     * @var BrandValidator
+     */
     private BrandValidator $validator;
 
+    /**
+     * @var ValidateException
+     */
     private ValidateException $validateException;
 
+    /**
+     * @var ServerException
+     */
     private ServerException $serverException;
 
+    /**
+     * BrandUpdateHandler constructor.
+     * @param BrandUpdateRepository $brandUpdateRepository
+     * @param BrandBoundery $brandBoundery
+     * @param BrandValidator $brandValidator
+     * @param ValidateException $validateException
+     * @param ServerException $serverException
+     */
     public function __construct(
         BrandUpdateRepository $brandUpdateRepository,
         BrandBoundery $brandBoundery,
@@ -39,11 +62,22 @@ class BrandUpdateHandler
         $this->serverException      = $serverException;
     }
 
+    /**
+     * @param int $id
+     * @throws ValidateException
+     */
     public function handler(int $id)
     {
         $this->updateIfDataAreValids($id);
     }
 
+    /**
+     * Update brand data by id.
+     *
+     * @param $id
+     * @throws ServerException
+     * @throws ValidateException
+     */
     private function updateIfDataAreValids($id)
     {
         if ($this->validator->validate($this->boundery)) {
@@ -55,6 +89,10 @@ class BrandUpdateHandler
         $this->save($id);
     }
 
+    /**
+     * @param $id
+     * @throws ServerException
+     */
     private function save($id)
     {
         try {

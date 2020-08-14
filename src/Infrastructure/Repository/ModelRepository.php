@@ -15,6 +15,10 @@ use SRC\Domain\Model\Interfaces\ModelFindAllRepository;
 use SRC\Domain\Model\Interfaces\ModelFindRepository;
 use SRC\Domain\Model\Interfaces\ModelUpdateRepository;
 
+/**
+ * Class ModelRepository
+ * @package SRC\Infrastructure\Repository
+ */
 class ModelRepository implements
     ModelCreateRepository,
     ModelUpdateRepository,
@@ -22,13 +26,24 @@ class ModelRepository implements
     ModelFindRepository,
     ModelDeleteRepository
 {
+    /**
+     * @var \PDO
+     */
     private $connection;
 
+    /**
+     * ModelRepository constructor.
+     * @param \PDO $pdo
+     */
     public function __construct(\PDO $pdo)
     {
         $this->connection = $pdo;
     }
 
+    /**
+     * @param ModelBoundery $modelBoundery
+     * @return bool
+     */
     public function create(ModelBoundery $modelBoundery): bool
     {
         $stmt = $this->connection->prepare("INSERT INTO model (name, brand_id) VALUE (?, ?)");
@@ -38,6 +53,10 @@ class ModelRepository implements
         return $stmt->execute();
     }
 
+    /**
+     * @param string $name
+     * @return bool
+     */
     public function findByModelName(string $name): bool
     {
         $stmt = $this->connection->prepare("SELECT id FROM model WHERE name = ?");
@@ -46,6 +65,9 @@ class ModelRepository implements
         return !!$stmt->fetch();
     }
 
+    /**
+     * @return array
+     */
     public function findAll(): array
     {
         $sql = 'SELECT id, name, brand_id FROM model';
@@ -54,6 +76,10 @@ class ModelRepository implements
         return $stmt->execute() ? $stmt->fetchAll(\PDO::FETCH_ASSOC) : [];
     }
 
+    /**
+     * @param $id
+     * @return array
+     */
     public function findById($id): array
     {
         $sql = 'SELECT id, name, brand_id FROM model WHERE id = ?';
@@ -63,6 +89,10 @@ class ModelRepository implements
         return $stmt->fetchAll(\PDO::FETCH_ASSOC);
     }
 
+    /**
+     * @param $id
+     * @return bool
+     */
     public function delete($id): bool
     {
         $stmt = $this->connection->prepare("DELETE FROM model WHERE id = ?");
@@ -71,6 +101,11 @@ class ModelRepository implements
         return $stmt->execute() ? true : false;
     }
 
+    /**
+     * @param int $id
+     * @param ModelBoundery $modelBoundery
+     * @return bool
+     */
     public function update(int $id, ModelBoundery $modelBoundery): bool
     {
         $stmt = $this->connection->prepare("UPDATE

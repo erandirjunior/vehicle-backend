@@ -4,10 +4,20 @@ namespace SRC\Application\Boundery;
 
 use SRC\Domain\Model\Interfaces\ModelBoundery;
 
+/**
+ * Class Model
+ * @package SRC\Application\Boundery
+ */
 class Model implements ModelBoundery
 {
+    /**
+     * @var
+     */
     private $name;
 
+    /**
+     * @var
+     */
     private $brandId;
 
     /**
@@ -20,6 +30,10 @@ class Model implements ModelBoundery
         $this->setBrandId($brandId);
     }
 
+    /**
+     * @param $name
+     * @throws \Exception
+     */
     private function setName($name)
     {
         if (empty($name)) {
@@ -28,11 +42,19 @@ class Model implements ModelBoundery
 
         $this->name = $name;
     }
+
+    /**
+     * @return string
+     */
     public function getName(): string
     {
         return $this->name;
     }
 
+    /**
+     * @param $brandId
+     * @throws \Exception
+     */
     private function setBrandId($brandId)
     {
         if (empty($brandId)) {
@@ -42,6 +64,9 @@ class Model implements ModelBoundery
         $this->brandId = $brandId;
     }
 
+    /**
+     * @return int
+     */
     public function getBrandId(): int
     {
         return $this->brandId;

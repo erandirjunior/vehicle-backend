@@ -11,14 +11,33 @@ use SRC\Domain\Model\Interfaces\ModelCreateRepository;
 use SRC\Domain\Model\Interfaces\ModelValidator;
 use SRC\Domain\Model\ModelCreateHandler;
 
+/**
+ * Class ModelCreate
+ * @package SRC\Application\Controller\Model
+ */
 class ModelCreate
 {
+    /**
+     * @var Request
+     */
     private Request $request;
 
+    /**
+     * @var ModelValidator
+     */
     private ModelValidator $validator;
 
+    /**
+     * @var ModelCreateRepository
+     */
     private ModelCreateRepository $repository;
 
+    /**
+     * ModelCreate constructor.
+     * @param Request $request
+     * @param ModelValidator $modelValidator
+     * @param ModelCreateRepository $modelCreateRepository
+     */
     public function __construct(
         Request $request,
         ModelValidator $modelValidator,
@@ -30,6 +49,12 @@ class ModelCreate
         $this->repository = $modelCreateRepository;
     }
 
+    /**
+     * Call class to execute create action and return a json.
+     *
+     * @see JsonPresenter
+     * @see ModelCreateHandler
+     */
     public function handler()
     {
         $name               = $this->request->input('name');

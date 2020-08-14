@@ -8,18 +8,45 @@ use SRC\Domain\Exception\ServerException;
 use SRC\Domain\Model\Interfaces\ModelCreateRepository;
 use SRC\Domain\Model\Interfaces\ModelValidator;
 
+/**
+ * Class ModelCreateHandler
+ * @package SRC\Domain\Model
+ */
 class ModelCreateHandler
 {
+    /**
+     * @var ModelBoundery
+     */
     private ModelBoundery $boundery;
 
+    /**
+     * @var ModelCreateRepository
+     */
     private ModelCreateRepository $repository;
 
+    /**
+     * @var ModelValidator
+     */
     private ModelValidator $validator;
 
+    /**
+     * @var ValidateException
+     */
     private ValidateException $validateException;
 
+    /**
+     * @var ServerException
+     */
     private ServerException $serverException;
 
+    /**
+     * ModelCreateHandler constructor.
+     * @param ModelBoundery $modelBoundery
+     * @param ModelCreateRepository $modelCreateRepository
+     * @param ModelValidator $modelValidator
+     * @param ValidateException $validateException
+     * @param ServerException $serverException
+     */
     public function __construct(
         ModelBoundery $modelBoundery,
         ModelCreateRepository $modelCreateRepository,
@@ -35,11 +62,19 @@ class ModelCreateHandler
         $this->serverException      = $serverException;
     }
 
+    /**
+     * Save new model.
+     *
+     * @throws ValidateException
+     */
     public function handler()
     {
         $this->createIfDataAreValids();
     }
 
+    /**
+     * @throws ValidateException
+     */
     private function createIfDataAreValids()
     {
         if ($this->validator->validate($this->boundery)) {
@@ -52,6 +87,10 @@ class ModelCreateHandler
         $this->createIfUniqueModelName();
     }
 
+    /**
+     * @throws ServerException
+     * @throws ValidateException
+     */
     private function createIfUniqueModelName()
     {
         if ($this->repository->findByModelName($this->boundery->getName())) {
@@ -64,13 +103,17 @@ class ModelCreateHandler
         $this->save();
     }
 
+    /**
+     * @throws ServerException
+     */
     private function save()
     {
-        if (!$this->repository->create($this->boundery)) {
+        try {
+            $this->repository->create($this->boundery);
+        } catch (\Exception $e) {
             $this->serverException->setMessage('Sorry, there was an error not specificated!');
 
             throw $this->serverException;
         }
-
     }
 }

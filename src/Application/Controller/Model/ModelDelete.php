@@ -8,8 +8,21 @@ use SRC\Application\Presenter\JsonPresenter;
 use SRC\Domain\Model\ModelDeleteHandler;
 use SRC\Domain\Model\Interfaces\ModelDeleteRepository;
 
+/**
+ * Class ModelDelete
+ * @package SRC\Application\Controller\Model
+ */
 class ModelDelete
 {
+    /**
+     * Call class to execute delete action and return a json.
+     *
+     * @param ModelDeleteRepository $modelDeleteRepository
+     * @param Request $request
+     *
+     * @see JsonPresenter
+     * @see ModelDeleteHandler
+     */
     public function handler(ModelDeleteRepository $modelDeleteRepository, Request $request)
     {
         $jsonPresenter      = new JsonPresenter();

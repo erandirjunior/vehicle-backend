@@ -2,8 +2,15 @@
 
 namespace SRC\Application\Boundery;
 
+/**
+ * Class Brand
+ * @package SRC\Application\Boundery
+ */
 class Brand implements \SRC\Domain\Brand\Interfaces\BrandBoundery
 {
+    /**
+     * @var string
+     */
     private $name;
 
     /**
@@ -19,6 +26,9 @@ class Brand implements \SRC\Domain\Brand\Interfaces\BrandBoundery
         $this->name = $name;
     }
 
+    /**
+     * @return string
+     */
     public function getName(): string
     {
         return $this->name;
