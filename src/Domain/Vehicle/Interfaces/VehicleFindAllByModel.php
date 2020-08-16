@@ -3,13 +3,15 @@
 namespace SRC\Domain\Vehicle\Interfaces;
 
 /**
- * Interface VehicleFindAllRepository
+ * Interface VehicleFindAllByModel
  * @package SRC\Domain\Vehicle\Interfaces
  */
-interface VehicleFindAllRepository
+interface VehicleFindAllByModel
 {
+
     /**
+     * @param $id
      * @return array
      */
-    public function findAll(): array;
+    public function findAllByModel($id): array;
 }
