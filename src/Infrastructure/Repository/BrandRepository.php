@@ -85,7 +85,8 @@ class BrandRepository implements
                                         FROM
                                             brand
                                         WHERE
-                                            id = ?");
+                                            id = ?
+                                        ORDER BY name ASC");
         $stmt->bindValue(1, $id);
         $stmt->execute();
         return $stmt->fetchAll(\PDO::FETCH_ASSOC);
@@ -113,13 +114,21 @@ class BrandRepository implements
         $stmt = $this->connection->prepare("UPDATE
                                                 brand
                                             SET
-                                                name = ?,
-                                                updated_at = NOW()
+                                                name = ?
                                             WHERE
                                                 id = ?");
         $stmt->bindValue(1, $brandBoundery->getName());
         $stmt->bindValue(2, $id);
 
         return $stmt->execute() ? 1 : 0;
+    }
+
+    public function checkIfUniqueBrandName(int $id, string $name)
+    {
+        $stmt = $this->connection->prepare("SELECT id FROM brand WHERE name = ? AND id != ?");
+        $stmt->bindValue(1, $name);
+        $stmt->bindValue(2, $id);
+        $stmt->execute();
+        return $stmt->fetchAll(\PDO::FETCH_ASSOC);
     }
 }

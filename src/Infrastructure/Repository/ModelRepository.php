@@ -12,6 +12,7 @@ use SRC\Domain\Model\Interfaces\ModelBoundery;
 use SRC\Domain\Model\Interfaces\ModelCreateRepository;
 use SRC\Domain\Model\Interfaces\ModelDeleteRepository;
 use SRC\Domain\Model\Interfaces\ModelFindAllRepository;
+use SRC\Domain\Model\Interfaces\ModelFindByBrandRepository;
 use SRC\Domain\Model\Interfaces\ModelFindRepository;
 use SRC\Domain\Model\Interfaces\ModelUpdateRepository;
 
@@ -24,7 +25,8 @@ class ModelRepository implements
     ModelUpdateRepository,
     ModelFindAllRepository,
     ModelFindRepository,
-    ModelDeleteRepository
+    ModelDeleteRepository,
+    ModelFindByBrandRepository
 {
     /**
      * @var \PDO
@@ -70,7 +72,7 @@ class ModelRepository implements
      */
     public function findAll(): array
     {
-        $sql = 'SELECT id, name, brand_id FROM model';
+        $sql = 'SELECT id, name FROM model ORDER BY name ASC';
         $stmt = $this->connection->query($sql);
 
         return $stmt->execute() ? $stmt->fetchAll(\PDO::FETCH_ASSOC) : [];
@@ -112,8 +114,7 @@ class ModelRepository implements
                                                 model
                                             SET
                                                 name = ?,
-                                                brand_id = ?,
-                                                updated_at = NOW()
+                                                brand_id = ?
                                             WHERE
                                                 id = ?");
         $stmt->bindValue(1, $modelBoundery->getName());
@@ -121,5 +122,27 @@ class ModelRepository implements
         $stmt->bindValue(3, $id);
 
         return $stmt->execute() ? 1 : 0;
+    }
+
+    /**
+     * @param $id
+     * @return array
+     */
+    public function findByBrandId($id): array
+    {
+        $sql = 'SELECT id, name FROM model WHERE brand_id = ?';
+        $stmt = $this->connection->prepare($sql);
+        $stmt->bindValue(1, $id);
+        $stmt->execute();
+        return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+    }
+
+    public function checkIfUniqueModelName(int $id, string $name)
+    {
+        $stmt = $this->connection->prepare("SELECT id FROM model WHERE name = ? AND id != ?");
+        $stmt->bindValue(1, $name);
+        $stmt->bindValue(2, $id);
+        $stmt->execute();
+        return $stmt->fetchAll(\PDO::FETCH_ASSOC);
     }
 }
