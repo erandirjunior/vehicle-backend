@@ -21,7 +21,7 @@ class Model implements ModelBoundery
     private $brandId;
 
     /**
-     * Brand constructor.
+     * Model constructor.
      * @param $name
      */
     public function __construct(string $name, $brandId)
