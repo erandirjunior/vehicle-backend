@@ -60,12 +60,13 @@ class ModelUpdate
     {
         $id                 = $this->request->parameter('id');
         $name               = $this->request->input('name');
+        $brandId            = $this->request->input('brandId');
         $validateException  = new ValidateException();
         $serverException    = new ServerException();
         $jsonPresenter      = new JsonPresenter();
 
         try {
-            $model  = new Model($name, $id);
+            $model  = new Model($name, $brandId);
             $domain = new ModelUpdateHandler(
                 $this->repository,
                 $model,
