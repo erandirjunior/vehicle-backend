@@ -12,7 +12,13 @@ $route->options('/{anything}', function () {
     return '';
 });
 
-$route->get('/generate-token', function (\PlugRoute\Http\Response $response) {
+$route->notFound(function (\PlugRoute\Http\Response $response) {
+    echo $response->setStatusCode(403)
+        ->response()
+        ->json(["You don't have permission to access this action!"]);
+});
+
+$route->get('/api/generate-token', function (\PlugRoute\Http\Response $response) {
     $key = "token_key";
     $payload = array(
         "iss" => "http://localhost:8081",
@@ -31,11 +37,15 @@ $route->get('/access', function (\PlugRoute\Http\Request $request, \PlugRoute\Ht
         ->json(["You don't have permission!"]);
 })->name('access');
 
-$route->group(['prefix' => '/', 'namespace' => 'SRC\Application\Controller'], function ($route) {
+$route->group(['prefix' => '/api/', 'namespace' => 'SRC\Application\Controller'], function ($route) {
+    $route->get('brands', '\\Brand\\BrandFindAll@handler');
+
+    $route->get('models/{id:\d+}', '\\Model\\ModelFind@handler');
+
+    $route->get('vehicles/{id:\d+}', '\\Vehicle\\VehicleFind@handler');
+
     $route->group(['middlewares' => [\SRC\Application\Middleware\AuthMiddleware::class]], function ($route) {
         $route->group(['namespace' => '\\Brand'], function ($route) {
-            $route->get('brands', '\\BrandFindAll@handler');
-
             $route->post('brands', '\\BrandCreate@handler');
 
             $route->put('brands/{id:\d+}', '\\BrandUpdate@handler');
@@ -53,8 +63,14 @@ $route->group(['prefix' => '/', 'namespace' => 'SRC\Application\Controller'], fu
             $route->put('models/{id:\d+}', '\\ModelUpdate@handler');
 
             $route->delete('models/{id:\d+}', '\\ModelDelete@handler');
+        });
 
-            $route->get('models/{id:\d+}', '\\ModelFind@handler');
+        $route->group(['namespace' => '\\Vehicle'], function ($route) {
+            $route->post('vehicles', '\\VehicleCreate@handler');
+
+            $route->put('vehicles/{id:\d+}', '\\VehicleUpdate@handler');
+
+            $route->delete('vehicles/{id:\d+}', '\\VehicleDelete@handler');
         });
     });
 });
