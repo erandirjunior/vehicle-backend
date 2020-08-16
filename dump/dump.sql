@@ -7,8 +7,6 @@ CREATE TABLE IF NOT EXISTS brand
     id         INT AUTO_INCREMENT
         PRIMARY KEY,
     name       VARCHAR(255)                       NOT NULL,
-    created_at DATETIME DEFAULT CURRENT_TIMESTAMP NULL,
-    updated_at DATETIME                           NULL,
     CONSTRAINT brand_name_uindex
         UNIQUE (name)
 );
@@ -19,8 +17,6 @@ CREATE TABLE IF NOT EXISTS model
         PRIMARY KEY,
     name       VARCHAR(255)                       NOT NULL,
     brand_id   INT                                NOT NULL,
-    created_at DATETIME DEFAULT CURRENT_TIMESTAMP NULL,
-    updated_at DATETIME                           NULL,
     CONSTRAINT model_name_uindex
         UNIQUE (name),
     CONSTRAINT model_brand_id_fk
