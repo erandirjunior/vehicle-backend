@@ -23,6 +23,8 @@ class AuthMiddleware implements PlugRouteMiddleware
             $key = "token_key";
 
             \Firebase\JWT\JWT::decode($token, $key, ['HS256']);
+
+            $request->add('token', $token);
         } catch (\Exception $e) {
             return $request->redirectToRoute('access');
         }
