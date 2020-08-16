@@ -70,7 +70,7 @@ class ModelUpdateHandler
      */
     public function handler(int $id)
     {
-        $this->updateIfDataAreValids($id);
+        return $this->updateIfDataAreValids($id);
     }
 
     /**
@@ -86,7 +86,19 @@ class ModelUpdateHandler
             throw $this->validateException;
         }
 
-        $this->save($id);
+        return $this->createIfUniqueModelName($id);
+    }
+
+    private function createIfUniqueModelName($id)
+    {
+        if ($this->repository->checkIfUniqueModelName($id, $this->boundery->getName())) {
+            $this->validateException
+                ->setMessage('The name is already in use!');
+
+            throw $this->validateException;
+        }
+
+        return $this->save($id);
     }
 
     /**
@@ -96,9 +108,9 @@ class ModelUpdateHandler
     private function save($id)
     {
         try {
-            $this->repository->update($id, $this->boundery);
+            return $this->repository->update($id, $this->boundery);
         } catch (\Exception $e) {
-            $this->serverException->setMessage('The name is already in use!');
+            $this->serverException->setMessage('Sorry, there was an error not specificated!');
 
             throw $this->serverException;
         }

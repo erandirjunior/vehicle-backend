@@ -14,4 +14,11 @@ interface ModelUpdateRepository
      * @return bool
      */
     public function update(int $id, ModelBoundery $modelBoundery): bool;
+
+    /**
+     * @param int $id
+     * @param string $name
+     * @return mixed
+     */
+    public function checkIfUniqueModelName(int $id, string $name);
 }

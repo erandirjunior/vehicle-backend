@@ -69,7 +69,7 @@ class ModelCreateHandler
      */
     public function handler()
     {
-        $this->createIfDataAreValids();
+        return $this->createIfDataAreValids();
     }
 
     /**
@@ -84,7 +84,7 @@ class ModelCreateHandler
             throw $this->validateException;
         }
 
-        $this->createIfUniqueModelName();
+        return $this->createIfUniqueModelName();
     }
 
     /**
@@ -100,7 +100,7 @@ class ModelCreateHandler
             throw $this->validateException;
         }
 
-        $this->save();
+        return $this->save();
     }
 
     /**
@@ -109,7 +109,7 @@ class ModelCreateHandler
     private function save()
     {
         try {
-            $this->repository->create($this->boundery);
+            return $this->repository->create($this->boundery);
         } catch (\Exception $e) {
             $this->serverException->setMessage('Sorry, there was an error not specificated!');
 
