@@ -44,7 +44,7 @@ class BrandDeleteHandler
     public function handler($id)
     {
         try {
-            $this->repository->delete($id);
+            return $this->repository->delete($id);
         } catch (\Exception $e) {
             $this->serverException->setMessage('Sorry, there was an error not specificated!');
 

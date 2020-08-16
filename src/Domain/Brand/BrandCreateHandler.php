@@ -69,7 +69,7 @@ class BrandCreateHandler
      */
     public function handler()
     {
-        $this->createIfDataAreValids();
+        return $this->createIfDataAreValids();
     }
 
     /**
@@ -84,7 +84,7 @@ class BrandCreateHandler
             throw $this->validateException;
         }
 
-        $this->createIfUniqueBrandName();
+        return $this->createIfUniqueBrandName();
     }
 
     /**
@@ -100,7 +100,7 @@ class BrandCreateHandler
             throw $this->validateException;
         }
 
-        $this->save();
+        return $this->save();
     }
 
     /**
@@ -109,7 +109,7 @@ class BrandCreateHandler
     private function save()
     {
         try {
-            $this->repository->create($this->boundery);
+            return $this->repository->create($this->boundery);
         } catch (\Exception $e) {
             $this->serverException->setMessage('Sorry, there was an error not specificated!');
 
